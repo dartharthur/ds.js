@@ -63,6 +63,21 @@ class LinkedList {
         temp.next = null;
     }
 
+    reverseIter() {
+        let prev = null;
+        let current = this.head;
+        let next;
+
+        while (current) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        this.head = prev;
+    }
+
     print() {
         let current = this.head;
         while (current) {
@@ -80,5 +95,5 @@ a.insertAtEnd(3);
 a.insertAtEnd(4);
 a.insertAtEnd(5);
 a.print();
-a.deleteAtNthPosition(1);
+a.reverseIter();
 a.print();
