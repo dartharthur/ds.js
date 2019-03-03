@@ -63,7 +63,7 @@ class LinkedList {
         temp.next = null;
     }
 
-    reverseIter() {
+    reverse() {
         let prev = null;
         let current = this.head;
         let next;
@@ -78,12 +78,37 @@ class LinkedList {
         this.head = prev;
     }
 
+    reverseRecur(node) {
+        if (node.next === null) {
+            this.head = node;
+            return;
+        }
+
+        this.reverseRecur(node.next);
+        const temp = node.next;
+        temp.next = node;
+        node.next = null;
+    }
+
     print() {
         let current = this.head;
         while (current) {
             console.log(`Current node's value is ${current.data}`);
             current = current.next;
         }
+    }
+
+    printRecur(node) {
+        if (!node) return;
+        console.log(`Current node's value is ${node.data}`);
+        this.printRecur(node.next);
+    }
+
+    reversePrintRecur(node) {
+        if (!node) return;
+        // to print in reverse, just reverse order of these two statements from forward print
+        this.reversePrintRecur(node.next);
+        console.log(`Current node's value in reverse is ${node.data}`);
     }
 }
 
@@ -95,5 +120,5 @@ a.insertAtEnd(3);
 a.insertAtEnd(4);
 a.insertAtEnd(5);
 a.print();
-a.reverseIter();
+a.reverseRecur(a.head);
 a.print();
