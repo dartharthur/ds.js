@@ -1,4 +1,5 @@
 /* Implemented using Circular Array */
+
 class Queue {
     constructor(n) {
         this._N = n;
