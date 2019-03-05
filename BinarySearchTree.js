@@ -83,6 +83,18 @@ class BinarySearchTree {
 
     return this._findMaxNode(this._root);
   }
+
+  _findHeight(node) {
+    if (node === null) return -1;
+    const leftHeight = this._findHeight(node.left);
+    const rightHeight = this._findHeight(node.right);
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  findHeight() {
+    if (this._root === null) return -1;
+    return this._findHeight(this._root);
+  }
 }
 
 const a = new BinarySearchTree();
@@ -91,8 +103,11 @@ a.insert(12);
 a.insert(9);
 a.insert(11);
 a.insert(5);
+a.insert(14);
+a.insert(15);
 console.log(a.findMin());
 console.log(a.findMax());
+console.log(a.findHeight());
 
 /* Iterative findMin / findMax
 const current = this.root;
