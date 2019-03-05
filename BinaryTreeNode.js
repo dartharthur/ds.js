@@ -1,6 +1,6 @@
 class BinaryTreeNode {
-  constructor(val) {
-    this.data = val;
+  constructor(data) {
+    this.data = data;
     this.left = null;
     this.right = null;
   }

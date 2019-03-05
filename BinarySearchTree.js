@@ -55,6 +55,34 @@ class BinarySearchTree {
 
     return this._searchNode(this._root, data);
   }
+
+  _findMinNode(node) {
+    if (node.left === null) return node.data;
+    if (node.left !== null) return this._findMinNode(node.left);
+  }
+
+  findMin() {
+    if (this.root === null) {
+      console.error('Tree does not exist!');
+      return -1;
+    }
+
+    return this._findMinNode(this._root);
+  }
+
+  _findMaxNode(node) {
+    if (node.right === null) return node.data;
+    if (node.right !== null) return this._findMaxNode(node.right);
+  }
+
+  findMax() {
+    if (this.root === null) {
+      console.error('Tree does not exist!');
+      return -1;
+    }
+
+    return this._findMaxNode(this._root);
+  }
 }
 
 const a = new BinarySearchTree();
@@ -62,4 +90,14 @@ a.insert(10);
 a.insert(12);
 a.insert(9);
 a.insert(11);
-console.log(a.search(9));
+a.insert(5);
+console.log(a.findMin());
+console.log(a.findMax());
+
+/* Iterative findMin / findMax
+const current = this.root;
+while (current.left !== null) {
+  current = current.left;
+}
+return current.data;
+ */
