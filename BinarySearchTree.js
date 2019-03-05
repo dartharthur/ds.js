@@ -2,7 +2,7 @@ const BinaryTreeNode = require('./BinaryTreeNode');
 
 class BinarySearchTree {
   constructor() {
-    this.root = null;
+    this._root = null;
   }
 
   _createNewNode(data) {
@@ -30,23 +30,30 @@ class BinarySearchTree {
   insert(data) {
     const newNode = this._createNewNode(data);
 
-    if (this.root === null) {
-      this.root = newNode;
+    if (this._root === null) {
+      this._root = newNode;
       return newNode;
     }
 
-    return this._insertNode(this.root, newNode);
+    return this._insertNode(this._root, newNode);
   }
 
-  search(current, data) {
-    if (current === null) return false;
-    if (current.data === data) return true;
+  _searchNode(node, data) {
+    if (node === null) return false;
+    if (node.data === data) return true;
 
-    if (data <= current.data) {
-      return this.search(current.left, data);
+    if (data <= node.data) {
+      return this._searchNode(node.left, data);
     } else {
-      return this.search(current.right, data);
+      return this._searchNode(node.right, data);
     }
+  }
+
+  search(data) {
+    if (this._root === null) return false;
+    if (this._root.data === data) return true;
+
+    return this._searchNode(this._root, data);
   }
 }
 
@@ -55,6 +62,4 @@ a.insert(10);
 a.insert(12);
 a.insert(9);
 a.insert(11);
-console.log(a);
-console.log(a.root.right);
-console.log(a.search(a.root, 13));
+console.log(a.search(9));
