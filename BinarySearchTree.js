@@ -5,48 +5,56 @@ class BinarySearchTree {
     this.root = null;
   }
 
-  _createNewNode(val) {
-    return new BinaryTreeNode(val);
+  _createNewNode(data) {
+    return new BinaryTreeNode(data);
   }
 
-  insert(current, val) {
+  _insertNode(node, newNode) {
+    if (node.left === null && newNode.data <= node.data) {
+      node.left = newNode;
+      return newNode;
+    }
+
+    if (node.right === null && newNode.data >= node.data) {
+      node.right = newNode;
+      return newNode;
+    }
+
+    if (newNode.data <= node.data) {
+      return this._insertNode(node.left, newNode);
+    } else {
+      return this._insertNode(node.right, newNode);
+    }
+  }
+
+  insert(data) {
+    const newNode = this._createNewNode(data);
+
     if (this.root === null) {
-      this.root = this._createNewNode(val);
-      return this.root;
+      this.root = newNode;
+      return newNode;
     }
 
-    if (current.left === null && val <= current.data) {
-      current.left = this._createNewNode(val);
-      return;
-    }
-
-    if (current.right === null && val >= current.data) {
-      current.right = this._createNewNode(val);
-      return;
-    }
-
-    if (val <= current.data) {
-      this.insert(current.left, val);
-    } else {
-      this.insert(current.right, val);
-    }
+    return this._insertNode(this.root, newNode);
   }
 
-  search(current, val) {
+  search(current, data) {
     if (current === null) return false;
-    if (current.data === val) return true;
+    if (current.data === data) return true;
 
-    if (val <= current.data) {
-      return this.search(current.left, val);
+    if (data <= current.data) {
+      return this.search(current.left, data);
     } else {
-      return this.search(current.right, val);
+      return this.search(current.right, data);
     }
   }
 }
 
 const a = new BinarySearchTree();
-a.insert(a.root, 10);
-a.insert(a.root, 12);
-a.insert(a.root, 9);
-a.insert(a.root, 11);
+a.insert(10);
+a.insert(12);
+a.insert(9);
+a.insert(11);
+console.log(a);
+console.log(a.root.right);
 console.log(a.search(a.root, 13));
