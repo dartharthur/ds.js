@@ -1,4 +1,5 @@
 const BinaryTreeNode = require('./BinaryTreeNode');
+const Queue = require('./adt-implementations/linked-list-based/Queue');
 
 class BinarySearchTree {
   constructor() {
@@ -95,6 +96,77 @@ class BinarySearchTree {
     if (this._root === null) return -1;
     return this._findHeight(this._root);
   }
+
+  /**
+   * Time: O(n)
+   * Space: O(1) - best, O(n) - worst/avg
+   */
+  levelOrderSearch() {
+    if (this._root === null) return;
+
+    const q = new Queue();
+    q.enqueue(this._root);
+
+    while (!q.isEmpty()) {
+      const currentNode = q.front();
+      console.log(`Current node's value is ${currentNode.data}`);
+      q.dequeue();
+
+      if (currentNode.left !== null) q.enqueue(currentNode.left);
+      if (currentNode.right !== null) q.enqueue(currentNode.right);
+    }
+  }
+
+  /**
+   * Time: O(n)
+   * Space: O(h)
+   *   Worst: O(n)
+   *   Best/Average: O(log n)
+   */
+  _preOrderSearch(node) {
+    if (node === null) return;
+    console.log(`Node's value is ${node.data}`);
+    this._preOrderSearch(node.left);
+    this._preOrderSearch(node.right);
+  }
+
+  preOrderSearch() {
+    this._preOrderSearch(this._root);
+  }
+
+  /**
+   * Time: O(n)
+   * Space: O(h)
+   *   Worst: O(n)
+   *   Best/Average: O(log n)
+   */
+  _inOrderSearch(node) {
+    if (node === null) return;
+    this._inOrderSearch(node.left);
+    console.log(`Node's value is ${node.data}`);
+    this._inOrderSearch(node.right);
+  }
+
+  inOrderSearch() {
+    this._inOrderSearch(this._root);
+  }
+
+  /**
+   * Time: O(n)
+   * Space: O(h)
+   *   Worst: O(n)
+   *   Best/Average: O(log n)
+   */
+  _postOrderSearch(node) {
+    if (node === null) return;
+    this._postOrderSearch(node.left);
+    this._postOrderSearch(node.right);
+    console.log(`Node's value is ${node.data}`);
+  }
+
+  postOrderSearch() {
+    this._postOrderSearch(this._root);
+  }
 }
 
 const a = new BinarySearchTree();
@@ -105,9 +177,13 @@ a.insert(11);
 a.insert(5);
 a.insert(14);
 a.insert(15);
-console.log(a.findMin());
-console.log(a.findMax());
-console.log(a.findHeight());
+// console.log(a.findMin());
+// console.log(a.findMax());
+// console.log(a.findHeight());
+// a.levelOrderSearch();
+// a.preOrderSearch();
+// a.inOrderSearch();
+a.postOrderSearch();
 
 /* Iterative findMin / findMax
 const current = this.root;
