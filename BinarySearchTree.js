@@ -1,5 +1,5 @@
-const BinaryTreeNode = require('./BinaryTreeNode');
 const Queue = require('./adt-implementations/linked-list-based/Queue');
+const BinaryTreeNode = require('./BinaryTreeNode');
 
 class BinarySearchTree {
   constructor() {
@@ -167,6 +167,31 @@ class BinarySearchTree {
   postOrderSearch() {
     this._postOrderSearch(this._root);
   }
+
+  // create a range for every node, node's value must fall within range, update range as your recurse
+  _isBST(node, minValue, maxValue) {
+    if (node === null) return true;
+
+    if (
+      node.data > minValue &&
+      node.data < maxValue &&
+      this._isBST(node.left, minValue, node.data) &&
+      this._isBST(node.right, node.data, maxValue)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // another solution is to do in-order traversal, track prev value, see if in sorted order
+  isBST() {
+    return this._isBST(
+      this._root,
+      Number.MIN_SAFE_INTEGER,
+      Number.MAX_SAFE_INTEGER,
+    );
+  }
 }
 
 const a = new BinarySearchTree();
@@ -183,7 +208,8 @@ a.insert(15);
 // a.levelOrderSearch();
 // a.preOrderSearch();
 // a.inOrderSearch();
-a.postOrderSearch();
+// a.postOrderSearch();
+console.log(a.isBST());
 
 /* Iterative findMin / findMax
 const current = this.root;
