@@ -1,58 +1,54 @@
 /* Implemented using Circular Array */
 
 class Queue {
-    constructor(n) {
-        this._N = n;
-        this._front = -1;
-        this._rear = -1;
-        this._queue = new Array(n);
+  constructor(n) {
+    this.data = new Array(n);
+    this.head = -1;
+    this.tail = -1;
+    this.size = n;
+  }
+
+  enqueue(value) {
+    if (this.isFull()) return false;
+    if (this.isEmpty()) this.head = 0;
+    this.tail = (this.tail + 1) % this.size;
+    this.data[this.tail] = value;
+    return true;
+  }
+
+  dequeue() {
+    if (this.isEmpty()) return false;
+    if (this.head === this.tail) {
+      this.head = this.tail = -1;
+      return true;
+    }
+    this.head = (this.head + 1) % this.size;
+    return true;
+  }
+
+  front() {
+    if (this.isEmpty()) {
+      console.error('Queue is empty!');
+      return -1;
     }
 
-    isEmpty() {
-        return this._front === -1 && this._rear === -1;
+    return this.data[this.head];
+  }
+
+  rear() {
+    if (this.isEmpty()) {
+      console.error('Queue is empty!');
+      return -1;
     }
 
-    front() {
-        if (this.isEmpty()) {
-            console.error('Queue is empty!');
-            return;
-        }
-        return this._queue[this._front];
-    }
+    return this.data[this.tail];
+  }
 
-    enqueue(val) {
-        if ((this._rear + 1) % this._N === this._front) {
-            console.error(`Queue is full! Unable to insert value ${val}.`);
-        } else if (this.isEmpty()) {
-            this._front = this._rear = 0;
-        } else {
-            this._rear = (this._rear + 1) % this._N;
-        }
-        this._queue[this._rear] = val;
-    }
+  isEmpty() {
+    return this.head === -1 && this.tail === -1;
+  }
 
-    dequeue() {
-        if (this.isEmpty()) {
-            console.error('Queue is already empty!');
-        } else if (this._front === this._rear) {
-            this._front = this._rear = -1;
-        } else {
-            this._front = (this._front + 1) % this._N;
-        }
-    }
+  isFull() {
+    return (this.tail + 1) % this.size === this.head;
+  }
 }
-
-const a = new Queue(2);
-a.enqueue(1);
-a.enqueue(2);
-console.log(`${a.front()} should be 1`);
-a.dequeue();
-console.log(`${a.front()} should be 2`);
-a.enqueue(3);
-console.log(`${a.front()} should be 2`);
-a.dequeue();
-a.dequeue();
-a.dequeue();
-a.enqueue(5);
-console.log(`${a.front()} should be 5`);
-console.log(a._queue);

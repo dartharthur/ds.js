@@ -168,7 +168,7 @@ class BinarySearchTree {
     this._postOrderSearch(this._root);
   }
 
-  // create a range for every node, node's value must fall within range, update range as your recurse
+  // create a range for every node, node's value must fall within range, update range as you recurse
   _isBST(node, minValue, maxValue) {
     if (node === null) return true;
 
