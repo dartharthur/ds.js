@@ -3,7 +3,7 @@ const BinaryTreeNode = require('./BinaryTreeNode');
 
 class BinarySearchTree {
   constructor() {
-    this._root = null;
+    this.root = null;
   }
 
   _createNewNode(data) {
@@ -31,12 +31,12 @@ class BinarySearchTree {
   insert(data) {
     const newNode = this._createNewNode(data);
 
-    if (this._root === null) {
-      this._root = newNode;
+    if (this.root === null) {
+      this.root = newNode;
       return newNode;
     }
 
-    return this._insertNode(this._root, newNode);
+    return this._insertNode(this.root, newNode);
   }
 
   _searchNode(node, data) {
@@ -51,15 +51,10 @@ class BinarySearchTree {
   }
 
   search(data) {
-    if (this._root === null) return false;
-    if (this._root.data === data) return true;
+    if (this.root === null) return false;
+    if (this.root.data === data) return true;
 
-    return this._searchNode(this._root, data);
-  }
-
-  _findMinNode(node) {
-    if (node.left === null) return node.data;
-    if (node.left !== null) return this._findMinNode(node.left);
+    return this._searchNode(this.root, data);
   }
 
   findMin() {
@@ -68,12 +63,9 @@ class BinarySearchTree {
       return -1;
     }
 
-    return this._findMinNode(this._root);
-  }
-
-  _findMaxNode(node) {
-    if (node.right === null) return node.data;
-    if (node.right !== null) return this._findMaxNode(node.right);
+    let root = this.root;
+    while (root.left !== null) root = root.left;
+    return root;
   }
 
   findMax() {
@@ -82,19 +74,16 @@ class BinarySearchTree {
       return -1;
     }
 
-    return this._findMaxNode(this._root);
+    let root = this.root;
+    while (root.right !== null) root = root.right;
+    return root;
   }
 
-  _findHeight(node) {
-    if (node === null) return -1;
-    const leftHeight = this._findHeight(node.left);
-    const rightHeight = this._findHeight(node.right);
+  findHeight(root) {
+    if (root === null) return -1;
+    const leftHeight = this.findHeight(root.left);
+    const rightHeight = this.findHeight(root.right);
     return Math.max(leftHeight, rightHeight) + 1;
-  }
-
-  findHeight() {
-    if (this._root === null) return -1;
-    return this._findHeight(this._root);
   }
 
   /**
@@ -102,10 +91,10 @@ class BinarySearchTree {
    * Space: O(1) - best, O(n) - worst/avg
    */
   levelOrderSearch() {
-    if (this._root === null) return;
+    if (this.root === null) return;
 
     const q = new Queue();
-    q.enqueue(this._root);
+    q.enqueue(this.root);
 
     while (!q.isEmpty()) {
       const currentNode = q.front();
@@ -123,15 +112,11 @@ class BinarySearchTree {
    *   Worst: O(n)
    *   Best/Average: O(log n)
    */
-  _preOrderSearch(node) {
-    if (node === null) return;
-    console.log(`Node's value is ${node.data}`);
-    this._preOrderSearch(node.left);
-    this._preOrderSearch(node.right);
-  }
-
-  preOrderSearch() {
-    this._preOrderSearch(this._root);
+  preOrderSearch(root) {
+    if (root === null) return;
+    console.log(`Node's value is ${root.data}`);
+    this.preOrderSearch(root.left);
+    this.preOrderSearch(root.right);
   }
 
   /**
@@ -140,15 +125,11 @@ class BinarySearchTree {
    *   Worst: O(n)
    *   Best/Average: O(log n)
    */
-  _inOrderSearch(node) {
-    if (node === null) return;
-    this._inOrderSearch(node.left);
-    console.log(`Node's value is ${node.data}`);
-    this._inOrderSearch(node.right);
-  }
-
-  inOrderSearch() {
-    this._inOrderSearch(this._root);
+  inOrderSearch(root) {
+    if (root === null) return;
+    this.inOrderSearch(root.left);
+    console.log(`Node's value is ${root.data}`);
+    this.inOrderSearch(root.right);
   }
 
   /**
@@ -157,15 +138,11 @@ class BinarySearchTree {
    *   Worst: O(n)
    *   Best/Average: O(log n)
    */
-  _postOrderSearch(node) {
-    if (node === null) return;
-    this._postOrderSearch(node.left);
-    this._postOrderSearch(node.right);
-    console.log(`Node's value is ${node.data}`);
-  }
-
-  postOrderSearch() {
-    this._postOrderSearch(this._root);
+  postOrderSearch(root) {
+    if (root === null) return;
+    this.postOrderSearch(root.left);
+    this.postOrderSearch(root.right);
+    console.log(`Node's value is ${root.data}`);
   }
 
   // create a range for every node, node's value must fall within range, update range as you recurse
@@ -187,7 +164,7 @@ class BinarySearchTree {
   // another solution is to do in-order traversal, track prev value, see if in sorted order
   isBST() {
     return this._isBST(
-      this._root,
+      this.root,
       Number.MIN_SAFE_INTEGER,
       Number.MAX_SAFE_INTEGER,
     );
@@ -195,6 +172,7 @@ class BinarySearchTree {
 }
 
 const a = new BinarySearchTree();
+let root = a.root;
 a.insert(10);
 a.insert(12);
 a.insert(9);
@@ -204,17 +182,10 @@ a.insert(14);
 a.insert(15);
 // console.log(a.findMin());
 // console.log(a.findMax());
-// console.log(a.findHeight());
+console.log(a.findHeight(root));
 // a.levelOrderSearch();
-// a.preOrderSearch();
-// a.inOrderSearch();
-// a.postOrderSearch();
+root = a.root;
+a.preOrderSearch(root);
+a.inOrderSearch(root);
+a.postOrderSearch(root);
 console.log(a.isBST());
-
-/* Iterative findMin / findMax
-const current = this.root;
-while (current.left !== null) {
-  current = current.left;
-}
-return current.data;
- */
