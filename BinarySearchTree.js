@@ -75,6 +75,28 @@ class BinarySearchTree {
     }
   }
 
+  getSuccessor(root, data) {
+    const current = this.find(root, data); // O(h) search
+    if (current === null) return null;
+    if (current.right !== null) {
+      // Case 1: Node has right sub-tree
+      return this.findMin(current.right); // O(h) search
+    } else {
+      // Case 2: Node does not have right sub-tree -> O(h) search
+      let successor = null;
+      let ancestor = root;
+      while (ancestor !== current) {
+        if (current.data < ancestor.data) {
+          successor = ancestor; // deepest node that has current node in LEFT sub-tree
+          ancestor = ancestor.left;
+        } else {
+          ancestor = ancestor.right;
+        }
+      }
+      return successor;
+    }
+  }
+
   exists(root, data) {
     if (root === null) return false;
     if (root.data === data) return true;
@@ -200,12 +222,17 @@ class BinarySearchTree {
 }
 
 const a = new BinarySearchTree();
-a.insert(10);
-a.insert(12);
-a.insert(9);
-a.insert(11);
-a.insert(5);
-a.insert(14);
 a.insert(15);
+a.insert(10);
+a.insert(20);
+a.insert(8);
+a.insert(12);
+a.insert(17);
+a.insert(25);
+a.insert(6);
+a.insert(11);
+a.insert(16);
+a.insert(27);
+
 let root = a.root;
-console.log(a.find(root, 14));
+console.log(a.getSuccessor(root, 12).data);
