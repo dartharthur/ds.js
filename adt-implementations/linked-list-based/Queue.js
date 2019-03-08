@@ -47,17 +47,3 @@ class Queue {
 }
 
 module.exports = Queue;
-
-const a = new Queue();
-a.enqueue(1);
-a.enqueue(2);
-console.log(`${a.front()} should be 1`);
-a.dequeue();
-console.log(`${a.front()} should be 2`);
-a.enqueue(3);
-console.log(`${a.front()} should be 2`);
-a.dequeue();
-a.dequeue();
-a.dequeue();
-a.enqueue(5);
-console.log(`${a.front()} should be 5`);

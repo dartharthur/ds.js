@@ -39,31 +39,59 @@ class BinarySearchTree {
     return this._insertNode(this.root, newNode);
   }
 
-  _searchNode(node, data) {
-    if (node === null) return false;
-    if (node.data === data) return true;
+  delete(root, data) {
+    if (root === null) return root;
+    else if (data < root.data) root.left = this.delete(root.left, data);
+    else if (data > root.data) root.right = this.delete(root.right, data);
+    else {
+      if (root.left === null && root.right === null) {
+        // delete root; // doesn't actually delete in JS but this is the idea
+        root = null;
+      } else if (root.left === null) {
+        // const temp = root;
+        root = root.right;
+        // delete temp;
+      } else if (root.right === null) {
+        // const temp = root;
+        root = root.left;
+        // delete temp;
+      } else {
+        const temp = this.findMin(root.right);
+        root.data = temp.data;
+        root.right = this.delete(root.right, temp.data);
+      }
+    }
+    return root;
+  }
 
-    if (data <= node.data) {
-      return this._searchNode(node.left, data);
+  find(root, data) {
+    if (root === null) return null;
+    if (root.data === data) return root;
+
+    if (data <= root.data) {
+      return this.find(root.left, data);
     } else {
-      return this._searchNode(node.right, data);
+      return this.find(root.right, data);
     }
   }
 
-  search(data) {
-    if (this.root === null) return false;
-    if (this.root.data === data) return true;
+  exists(root, data) {
+    if (root === null) return false;
+    if (root.data === data) return true;
 
-    return this._searchNode(this.root, data);
+    if (data <= root.data) {
+      return this.exists(root.left, data);
+    } else {
+      return this.exists(root.right, data);
+    }
   }
 
-  findMin() {
-    if (this.root === null) {
+  findMin(root) {
+    if (root === null) {
       console.error('Tree does not exist!');
       return -1;
     }
 
-    let root = this.root;
     while (root.left !== null) root = root.left;
     return root;
   }
@@ -172,7 +200,6 @@ class BinarySearchTree {
 }
 
 const a = new BinarySearchTree();
-let root = a.root;
 a.insert(10);
 a.insert(12);
 a.insert(9);
@@ -180,12 +207,5 @@ a.insert(11);
 a.insert(5);
 a.insert(14);
 a.insert(15);
-// console.log(a.findMin());
-// console.log(a.findMax());
-console.log(a.findHeight(root));
-// a.levelOrderSearch();
-root = a.root;
-a.preOrderSearch(root);
-a.inOrderSearch(root);
-a.postOrderSearch(root);
-console.log(a.isBST());
+let root = a.root;
+console.log(a.find(root, 14));
