@@ -15,7 +15,7 @@ function partition(arr, start, end) {
   while (lt <= gt) {
     while (arr[lt] <= arr[start]) lt++;
     while (arr[gt] > arr[start]) gt--;
-    if (lt <= gt) {
+    if (lt < gt) {
       [arr[lt], arr[gt]] = [arr[gt], arr[lt]];
       lt++;
       gt--;
