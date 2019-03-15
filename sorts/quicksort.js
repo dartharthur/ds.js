@@ -1,34 +1,54 @@
-function quicksort(A, start, end) {
-  if (start < end) {
-    let pIndex = randomizedPartition(A, start, end);
-    quicksort(A, start, pIndex - 1);
-    quicksort(A, pIndex + 1, end);
-  }
+function quicksort(arr, start, end) {
+  if (start >= end) return;
+  let c = choosePivot(start, end);
+  [arr[start], arr[c]] = [arr[c], arr[start]];
+  let p = partition(arr, start, end);
+  quicksort(arr, start, p - 1);
+  quicksort(arr, p + 1, end);
+  return;
 }
 
-function randomizedPartition(A, start, end) {
-  let randomPivotIndex = getRandomIndex(start, end);
-  [A[randomPivotIndex], A[end]] = [A[end], A[randomPivotIndex]];
-  return partition(A, start, end);
-}
-
-function partition(A, start, end) {
-  let pivot = A[end];
-  let pIndex = start;
-  for (let i = start; i < end; i++) {
-    if (A[i] <= pivot) {
-      [A[i], A[pIndex]] = [A[pIndex], A[i]];
-      pIndex++;
+/* Partition Implementation 1 */
+function partition(arr, start, end) {
+  let lt = start + 1;
+  let gt = end;
+  while (lt <= gt) {
+    while (arr[lt] <= arr[start]) lt++;
+    while (arr[gt] > arr[start]) gt--;
+    if (lt <= gt) {
+      [arr[lt], arr[gt]] = [arr[gt], arr[lt]];
+      lt++;
+      gt--;
     }
   }
-  [A[pIndex], A[end]] = [A[end], A[pIndex]];
-  return pIndex;
+  [arr[start], arr[gt]] = [arr[gt], arr[start]];
+  return gt;
 }
 
-function getRandomIndex(start, end) {
+function choosePivot(start, end) {
   return Math.floor(Math.random() * (end - start + 1)) + start;
 }
 
-const a = [2, 4, 1, 6, 8, 5, 3, 7];
-quicksort(a, 0, 7);
+const a = [2, 4, 1, 6, 8, 5, 3, 7, 7, 7];
+const b = [2, 1];
+const c = [1];
+quicksort(a, 0, 9);
+quicksort(b, 0, 1);
+quicksort(b, 0, 0);
 console.log(a);
+console.log(b);
+console.log(c);
+
+/* Partition Implementation 2
+function partition(arr, start, end) {
+  let lt = start;
+  for (curr = start + 1; curr <= end; curr++) {
+    if (arr[curr] <= arr[start]) {
+      [arr[lt + 1], arr[curr]] = [arr[curr], arr[lt + 1]];
+      lt++;
+    }
+  }
+  [arr[start], arr[lt]] = [arr[lt], arr[start]];
+  return lt;
+}
+*/
