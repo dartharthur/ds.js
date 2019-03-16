@@ -10,19 +10,15 @@ function quicksort(arr, start, end) {
 
 /* Partition Implementation 1 */
 function partition(arr, start, end) {
-  let lt = start + 1;
-  let gt = end;
-  while (lt <= gt) {
-    while (arr[lt] <= arr[start]) lt++;
-    while (arr[gt] > arr[start]) gt--;
-    if (lt < gt) {
-      [arr[lt], arr[gt]] = [arr[gt], arr[lt]];
+  let lt = start;
+  for (curr = start + 1; curr <= end; curr++) {
+    if (arr[curr] <= arr[start]) {
+      [arr[lt + 1], arr[curr]] = [arr[curr], arr[lt + 1]];
       lt++;
-      gt--;
     }
   }
-  [arr[start], arr[gt]] = [arr[gt], arr[start]];
-  return gt;
+  [arr[start], arr[lt]] = [arr[lt], arr[start]];
+  return lt;
 }
 
 function choosePivot(start, end) {
@@ -41,14 +37,18 @@ console.log(c);
 
 /* Partition Implementation 2
 function partition(arr, start, end) {
-  let lt = start;
-  for (curr = start + 1; curr <= end; curr++) {
-    if (arr[curr] <= arr[start]) {
-      [arr[lt + 1], arr[curr]] = [arr[curr], arr[lt + 1]];
+  let lt = start + 1;
+  let gt = end;
+  while (lt <= gt) {
+    while (arr[lt] <= arr[start]) lt++;
+    while (arr[gt] > arr[start]) gt--;
+    if (lt < gt) {
+      [arr[lt], arr[gt]] = [arr[gt], arr[lt]];
       lt++;
+      gt--;
     }
   }
-  [arr[start], arr[lt]] = [arr[lt], arr[start]];
-  return lt;
+  [arr[start], arr[gt]] = [arr[gt], arr[start]];
+  return gt;
 }
 */
