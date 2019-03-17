@@ -1,18 +1,26 @@
 class MinHeap {
   constructor() {
     this.size = 0;
-    this._heap = [];
+    this.heap = [];
+  }
+
+  isEmpty() {
+    return this.size === 0;
+  }
+
+  getHeap() {
+    return this.heap;
   }
 
   getMin() {
-    if (this.size > 0) return this._heap[1];
+    if (!this.isEmpty()) return this.heap[1];
   }
 
   deleteMin() {
-    if (this.size > 0) {
-      const min = this._heap[1];
-      this._heap[1] = this._heap[this.size];
-      delete this._heap[this.size];
+    if (!this.isEmpty()) {
+      const min = this.heap[1];
+      this.heap[1] = this.heap[this.size];
+      this.heap.splice(this.size);
       this.size--;
       this._siftDown(1);
       return min;
@@ -20,7 +28,7 @@ class MinHeap {
   }
 
   insert(val) {
-    this._heap[this.size + 1] = val;
+    this.heap[this.size + 1] = val;
     this.size++;
     let i = this.size;
     this._siftUp(i);
@@ -39,22 +47,20 @@ class MinHeap {
     let left = this._getLeftChildIndex(i);
     let right = this._getRightChildIndex(i);
     while (!this._isLeaf(i) && this._isGreaterThanChild(i, left, right)) {
-      left = this._getLeftChildIndex(i);
-      right = this._getRightChildIndex(i);
       const minChild = this._getIndexOfMinChild(left, right);
       this._swap(i, minChild);
       i = minChild;
+      left = this._getLeftChildIndex(i);
+      right = this._getRightChildIndex(i);
     }
   }
 
   _isLessThanParent(i, parent) {
-    return this._heap[i] < this._heap[this._getParentIndex(i)];
+    return this.heap[i] < this.heap[this._getParentIndex(i)];
   }
 
   _isGreaterThanChild(i, left, right) {
-    return (
-      this._heap[i] > this._heap[left] || this._heap[i] > this._heap[right]
-    );
+    return this.heap[i] > this.heap[left] || this.heap[i] > this.heap[right];
   }
 
   _isLeaf(i) {
@@ -77,10 +83,44 @@ class MinHeap {
   }
 
   _getIndexOfMinChild(i, j) {
-    return this._heap[i] <= this._heap[j] ? i : j;
+    if (j <= this.size) {
+      return this.heap[i] <= this.heap[j] ? i : j;
+    }
+    return i;
   }
 
   _swap(i, j) {
-    [this._heap[i], this._heap[j]] = [this._heap[j], this._heap[i]];
+    [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
   }
 }
+
+const minHeap = new MinHeap();
+minHeap.insert(5);
+minHeap.insert(3);
+minHeap.insert(17);
+minHeap.insert(10);
+minHeap.insert(84);
+minHeap.insert(19);
+minHeap.insert(6);
+minHeap.insert(22);
+minHeap.insert(9);
+minHeap.deleteMin();
+console.log('delete 1', minHeap.getHeap());
+minHeap.deleteMin();
+console.log('delete 2', minHeap.getHeap());
+minHeap.deleteMin();
+console.log('delete 3', minHeap.getHeap());
+minHeap.deleteMin();
+console.log('delete 4', minHeap.getHeap());
+minHeap.deleteMin();
+console.log('delete 5', minHeap.getHeap());
+minHeap.deleteMin();
+console.log('delete 6', minHeap.getHeap(), minHeap.size);
+minHeap.deleteMin();
+console.log('delete 7', minHeap.getHeap(), minHeap.size);
+minHeap.deleteMin();
+console.log('delete 8', minHeap.getHeap());
+minHeap.deleteMin();
+console.log('delete 9', minHeap.getHeap());
+minHeap.deleteMin();
+console.log('delete 10', minHeap.getHeap());
